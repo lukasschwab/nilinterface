@@ -1,6 +1,6 @@
 module github.com/lukasschwab/nilinterface
 
-go 1.23.5
+go 1.23
 
 require (
 	github.com/golangci/plugin-module-register v0.1.1
