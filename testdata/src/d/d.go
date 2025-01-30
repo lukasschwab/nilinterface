@@ -1,4 +1,4 @@
-package b
+package d
 
 type Stringy interface {
 	String() string
