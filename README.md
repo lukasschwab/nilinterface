@@ -9,7 +9,7 @@ implements the interface; why are you passing something that'll panic if used?
 To install the linter, run
 
 ```
-go install github.com/lukasschwab/nilinterface@latest
+go install github.com/lukasschwab/nilinterface/cmd/nilinterface@latest
 ```
 
 You can invoke it as `nilinterface`; in your Go project, run `nilinterface ./...`.
@@ -17,7 +17,7 @@ You can invoke it as `nilinterface`; in your Go project, run `nilinterface ./...
 ### From source
 
 1. Clone this repository
-2. Build the binary: `go build -o nilinterface`
+2. Build the binary: `go build cmd/nilinterface.go`
 3. Do with it what you will
 
 ## Examples
