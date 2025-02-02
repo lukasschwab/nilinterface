@@ -2,8 +2,9 @@
 
 Extremely simple `go/analysis`-based linter for forbidding [passing literal `nil` as an interface argument](https://go.dev/tour/methods/13) to function calls. The function expects something that implements the interface; why are you passing something that'll panic if used?
 
-> [!WARNING]
-> This package structure is currently overfit to serving as a golangci-lint module plugin, *not* as a standalone binary or with `go vet --vettool`. Watch this space.
+## Examples
+
+See the testdata directory for short examples of programs that violate the rule.
 
 ## Usage
 
@@ -61,6 +62,7 @@ go vet -vettool=$(which nilinterface) ./...
 - [ ] Suggest a makefile to do lazy rebuild when config changes?
 - [ ] *Briefly* mention the `*.so` shared binary plugin system; this requires building `golangci-lint` for a particular system *and* your plugin for the same, which seems tedious.
 - [ ] Cover GitHub Actions cacheing strategy.
+- [ ] Can you point VS Code at that custom binary?
 
 ```make
 # NOTE: assumes custom-gcl.yml doesn't specify a different name.
@@ -70,7 +72,3 @@ custom-gcl: .custom-gcl.yml
 lint: custom-gcl
 	custom-gcl run
 ```
-
-## Examples
-
-See the testdata directory for short examples of programs that violate the rule.

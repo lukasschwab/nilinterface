@@ -1,5 +1,6 @@
-// linters modeled on https://github.com/golangci/example-plugin-module-linter/blob/main/example.go
-package linters
+// nilinterface module plugin for golangci-lint modeled on
+// https://github.com/golangci/example-plugin-module-linter/blob/main/example.go
+package nilinterface
 
 import (
 	"github.com/lukasschwab/nilinterface/pkg/analyzer"
@@ -16,6 +17,8 @@ func New(settings any) (register.LinterPlugin, error) {
 	return linterPlugin{}, nil
 }
 
+// linterPlugin implements the register.LinterPlugin interface for
+// [analysis.Analyzer].
 type linterPlugin struct{}
 
 func (l linterPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
