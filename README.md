@@ -1,27 +1,75 @@
 # nilinterface
 
-Extremely simple `go/analysis`-based linter for forbidding passing `nil` as an
-interface argument to function calls. The function expects something that
-implements the interface; why are you passing something that'll panic if used?
+Extremely simple `go/analysis`-based linter for forbidding [passing literal `nil` as an interface argument](https://go.dev/tour/methods/13) to function calls. The function expects something that implements the interface; why are you passing something that'll panic if used?
 
 > [!WARNING]
 > This package structure is currently overfit to serving as a golangci-lint module plugin, *not* as a standalone binary or with `go vet --vettool`. Watch this space.
 
-<!-- ## Usage
+## Usage
 
-To install the linter, run
+### Standalone
 
+1. Install the binary; either run `go install github.com/lukasschwab/nilinterface@latest` or clone this repo and install from local source:
+
+    ```bash
+    go install ./cmd/standalone/nilinterface.go
+    ```
+
+2. Invoke `nilinterface` directly:
+
+    ```bash
+    nilinterface ./...
+    ```
+
+<details><summary>Example from project root</summary>
+
+```bash
+# Standalone binary installation
+go install ./cmd/standalone/nilinterface.go
+cd ./pkg/analyzer/testdata
+# Invocation
+go vet -vettool=$(which nilinterface) ./...
 ```
-go install github.com/lukasschwab/nilinterface/cmd/nilinterface@latest
+
+</details>
+
+### With `go vet`
+
+1. Follow the [Standalone instructions](#Standalone) to install a `nilinterface` binary.
+
+2. Invoke `nilinterface` through `vet`:
+
+    ```bash
+    go vet -vettool=$(which nilinterface)
+    ```
+
+<details><summary>Example from project root</summary>
+
+```bash
+# Standalone binary installation
+go install ./cmd/standalone/nilinterface.go
+cd ./pkg/analyzer/testdata
+# Invocation
+go vet -vettool=$(which nilinterface) ./...
 ```
 
-You can invoke it as `nilinterface`; in your Go project, run `nilinterface ./...`.
+</details>
 
-### From source
+### With `golangci-lint`
 
-1. Clone this repository
-2. Build the binary: `go build cmd/nilinterface.go`
-3. Do with it what you will -->
+- [ ] Basic local usage: building a custom binary and using it.
+- [ ] Suggest a makefile to do lazy rebuild when config changes?
+- [ ] *Briefly* mention the `*.so` shared binary plugin system; this requires building `golangci-lint` for a particular system *and* your plugin for the same, which seems tedious.
+- [ ] Cover GitHub Actions cacheing strategy.
+
+```make
+# NOTE: assumes custom-gcl.yml doesn't specify a different name.
+custom-gcl: .custom-gcl.yml
+	golangci-lint custom -v
+
+lint: custom-gcl
+	custom-gcl run
+```
 
 ## Examples
 
