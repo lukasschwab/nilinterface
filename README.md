@@ -61,8 +61,18 @@ go vet -vettool=$(which nilinterface) ./...
 - [ ] Basic local usage: building a custom binary and using it.
 - [ ] Suggest a makefile to do lazy rebuild when config changes?
 - [ ] *Briefly* mention the `*.so` shared binary plugin system; this requires building `golangci-lint` for a particular system *and* your plugin for the same, which seems tedious.
+    + Any instructions about `*.so` files or the `CGO_ENABLED=1` flag are probably about the Go plugin system, *not* the module plugin system;  disregard them. Old references don't distinguish, because the Go plugin system came first. [Example](https://github.com/golangci/golangci-lint-action-plugin-example)
 - [ ] Cover GitHub Actions cacheing strategy.
 - [ ] Can you point VS Code at that custom binary?
+- [ ] Consider demoing in this repository; too confusing?
+
+```yaml
+version: v1.63.4
+plugins:
+  - module: 'github.com/lukasschwab/nilinterface'
+    import: 'github.com/lukasschwab/nilinterface/pkg/golangci-linter'
+    version: v0.0.6
+```
 
 ```make
 # NOTE: assumes custom-gcl.yml doesn't specify a different name.
