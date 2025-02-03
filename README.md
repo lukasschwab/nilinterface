@@ -58,27 +58,64 @@ go vet -vettool=$(which nilinterface) ./...
 
 ### With `golangci-lint`
 
-- [ ] Basic local usage: building a custom binary and using it.
-    - [ ] Pointing VS Code at your custom binary.
-- [ ] Suggest a makefile to do lazy rebuild when config changes?
-- [ ] *Briefly* mention the `*.so` shared binary plugin system; this requires building `golangci-lint` for a particular system *and* your plugin for the same, which seems tedious.
-    + Any instructions about `*.so` files or the `CGO_ENABLED=1` flag are probably about the Go plugin system, *not* the module plugin system;  disregard them. Old references don't distinguish, because the Go plugin system came first. [Example](https://github.com/golangci/golangci-lint-action-plugin-example)
-- [ ] Cover GitHub Actions cacheing strategy.
-- [ ] Consider demoing in this repository; too confusing?
+> [!WARNING]
+> This guide describes using `golangci-lint`'s [Module Plugin System](https://golangci-lint.run/plugins/module-plugins), *not* the [Go plugin system](https://golangci-lint.run/plugins/go-plugins/). These are easily confused, and old documentation on `golangci-lint` extensibility doesn't explicitly distinguish the two.
+>
+> If you're troubleshooting, advice regarding `.so` files and the `CGO_ENABLED` build flag is likely specific to the *Go plugin system.*
 
-```yaml
-version: v1.63.4
-plugins:
-  - module: 'github.com/lukasschwab/nilinterface'
-    import: 'github.com/lukasschwab/nilinterface/pkg/golangci-linter'
-    version: v0.0.6
+This guide assumes you're already using `golangci-lint`. See also `golangci-lint`'s (currently crummy) docs: [Module Plugin System / The Automatic Way](https://golangci-lint.run/plugins/module-plugins/#the-automatic-way).
+
+1. In your project, create a new `.custom-gcl.yml` file pinning a version of this linter:
+
+    ```yaml
+    version: v1.63.4
+    plugins:
+      - module: 'github.com/lukasschwab/nilinterface'
+        import: 'github.com/lukasschwab/nilinterface/pkg/golangci-linter'
+        version: v0.0.6
+    ```
+
+    For an example, see [.custom-gcl.yml](.custom-gcl.yml).
+
+2. Build `custom-gcl`, a version of `golangci-lint` with `nilinterface` (and any others pinned in `.custom-gcl.yml`) available to it.
+
+    ```bash
+    golangci-lint custom -v
+    ```
+
+3. If you have a `.golangci.yml` configuration file, update it to enable the custom linter.
+
+    ```yml
+    linters-settings:
+      custom:
+        nilinterface:
+          type: 'module'
+          description: 'forbids passing `nil` as an interface argument to function calls'
+
+    # If you have `disable-all: true`, add nilinterface to your enabled linters.
+    linters:
+      disable-all: true
+      enable:
+        - nilinterface
+    ```
+
+When you update `.custom-gcl.yml` (e.g. to pin a new linter version), you will need to rebuild `custom-gcl` to reflect those changes. If you use `make`, you can integrate the linter build step into your Makefile targets; see [Makefile](Makefile).
+
+#### In VS Code
+
+`custom-gcl` is a drop-in replacement for `golangci-lint`. You can specify the substitution in VS Code with the `go.alternateTools` setting. If `custom-gcl` is built in your VS Code workspace root:
+
+```json
+{
+  "go.lintTool": "golangci-lint",
+  "go.alternateTools": {
+    "golangci-lint": "${workspaceFolder}/custom-gcl"
+  },
+}
 ```
 
-```make
-.PHONY: lint
-lint: custom-gcl
-	./custom-gcl run
+#### In GitHub Actions
 
-custom-gcl: .custom-gcl.yml
-	golangci-lint custom -v
-```
+At time of writing, `golangci-lint`'s official GitHub Action doesn't support building and running custom linters. See @fr12k's [comment](https://github.com/golangci/golangci-lint-action/issues/1076#issuecomment-2624479984) suggesting a workaround custom action.
+
+<!-- TODO: update when I publish my action. -->
