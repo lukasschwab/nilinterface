@@ -116,6 +116,7 @@ When you update `.custom-gcl.yml` (e.g. to pin a new linter version), you will n
 
 #### In GitHub Actions
 
-At time of writing, `golangci-lint`'s official GitHub Action doesn't support building and running custom linters. See @fr12k's [comment](https://github.com/golangci/golangci-lint-action/issues/1076#issuecomment-2624479984) suggesting a workaround custom action.
+At time of writing, `golangci-lint`'s official GitHub Action doesn't support building and running custom linters.
 
-<!-- TODO: update when I publish my action. -->
++ Consider using [`golangci-lint-custom-plugins-action`](https://github.com/marketplace/actions/golangci-lint-custom).
++ To build your own, see @fr12k's [comment](https://github.com/golangci/golangci-lint-action/issues/1076#issuecomment-2624479984) suggesting a workaround custom action.
