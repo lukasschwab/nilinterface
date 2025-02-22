@@ -13,7 +13,7 @@ See the testdata directory for short examples of programs that violate the rule.
 1. Install the binary; either run `go install github.com/lukasschwab/nilinterface@latest` or clone this repo and install from local source:
 
     ```bash
-    go install ./cmd/standalone/nilinterface.go
+    go install ./cmd/nilinterface/nilinterface.go
     ```
 
 2. Invoke `nilinterface` directly:
@@ -26,7 +26,7 @@ See the testdata directory for short examples of programs that violate the rule.
 
 ```bash
 # Standalone binary installation
-go install ./cmd/standalone/nilinterface.go
+go install ./cmd/nilinterface/nilinterface.go
 cd ./pkg/analyzer/testdata
 # Invocation
 go vet -vettool=$(which nilinterface) ./...
@@ -48,7 +48,7 @@ go vet -vettool=$(which nilinterface) ./...
 
 ```bash
 # Standalone binary installation
-go install ./cmd/standalone/nilinterface.go
+go install ./cmd/nilinterface/nilinterface.go
 cd ./pkg/analyzer/testdata
 # Invocation
 go vet -vettool=$(which nilinterface) ./...
