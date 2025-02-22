@@ -10,10 +10,5 @@ import (
 
 func TestAnalyzer(t *testing.T) {
 	testdata := analysistest.TestData()
-	analysistest.Run(t, testdata, analyzer.Analyzer, "a")
-	analysistest.Run(t, testdata, analyzer.Analyzer, "b")
-	analysistest.Run(t, testdata, analyzer.Analyzer, "c")
-	analysistest.Run(t, testdata, analyzer.Analyzer, "d")
-	analysistest.Run(t, testdata, analyzer.Analyzer, "e")
-	analysistest.Run(t, testdata, analyzer.Analyzer, "f")
+	analysistest.Run(t, testdata, analyzer.Analyzer, "./...")
 }
