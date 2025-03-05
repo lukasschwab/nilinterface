@@ -24,7 +24,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			for i, arg := range callExpr.Args {
 				if ident, ok := arg.(*ast.Ident); ok && ident.Name == "nil" {
 					if sig, ok := pass.TypesInfo.TypeOf(callExpr.Fun).(*types.Signature); ok {
-						if i < sig.Params().Len() && isInterface(sig.Params().At(i).Type()) {
+						if i < sig.Params().Len() && isInterfaceish(sig.Params().At(i).Type()) {
 							pass.Reportf(arg.Pos(), "nil passed to interface parameter")
 						}
 					}
@@ -36,7 +36,16 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	return nil, nil
 }
 
+func isInterfaceish(t types.Type) bool {
+	return isInterface(t) || isFunction(t)
+}
+
 func isInterface(t types.Type) bool {
 	_, ok := t.Underlying().(*types.Interface)
+	return ok
+}
+
+func isFunction(t types.Type) bool {
+	_, ok := t.Underlying().(*types.Signature)
 	return ok
 }
